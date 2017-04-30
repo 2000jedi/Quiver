@@ -4,15 +4,19 @@
 
 const fs = require("fs");
 const md = require("markdown").markdown;
+const dialog = require("electron").remote.dialog;
+const libPath = "C:\\Users\\2000jedi\\Documents\\Test.qvlibrary";
+
 module.exports = {
+    libPath: libPath,
+
     getNotebooks: function () {
-        const lib = getLibPath();
+        const lib = libPath;
         fs.readdir(lib, function (err, files) {
             if (err) {
-                alert("Cannot find Quiver library!");
+                dialog.showErrorBox("File Not Found", "Cannot Find Quiver Library!");
                 return
             }
-
             files.forEach(function (file) {
                 if (file.toString() !== "Trash.qvnotebook") {
                     let elem = document.createElement("div");
@@ -21,15 +25,19 @@ module.exports = {
                     document.getElementById("menu").appendChild(elem);
                 }
             });
+            let add = document.createElement("div");
+            add.innerHTML = " + Add Notebook";
+            add.setAttribute("onclick", "db.addNoteBook();");
+            document.getElementById("menu").appendChild(add);
         });
     },
 
     getNotes: function (notebook_name) {
         cur_notebook = notebook_name;
-        const lib = getLibPath() + "/" + notebook_name + ".qvnotebook";
+        const lib = libPath + "/" + notebook_name + ".qvnotebook";
         fs.readdir(lib, function (err, files) {
             if (err) {
-                console.log("Error reading notebook");
+                dialog.showErrorBox("Internal Error", "Contact Developer");
                 return
             }
             document.getElementById("submenu").innerHTML = "";
@@ -42,13 +50,17 @@ module.exports = {
                     document.getElementById("submenu").appendChild(elem);
                 }
             });
+            let add = document.createElement("div");
+            add.innerHTML = " + Add Note";
+            add.setAttribute("onclick", "db.newNote();");
+            document.getElementById("submenu").appendChild(add);
         });
     },
 
     getNote: function (notebook_name, note_dir) {
         cur_notebook = notebook_name;
         cur_note = note_dir;
-        const lib = getLibPath() + '/' + notebook_name + '.qvnotebook/' + note_dir + '/';
+        const lib = libPath + '/' + notebook_name + '.qvnotebook/' + note_dir + '/';
         let meta = JSON.parse(fs.readFileSync(lib + 'meta.json', 'utf8'));
         let content = JSON.parse(fs.readFileSync(lib + 'content.json', 'utf8'));
         document.getElementById("content").innerHTML = "";
@@ -62,6 +74,12 @@ module.exports = {
             document.getElementById("content").appendChild(elem);
         });
 
+    },
+
+    addNoteBook: function (){
+        document.getElementById("input_prompt").innerHTML = "Set name for the new notebook: ";
+        document.getElementById("inputDialog").style.display = "initial";
+        cur_submit = "notebook";
     },
 
     updateNote: function (notebook_name, note_name, content) {
@@ -79,7 +97,3 @@ module.exports = {
     parseCell: function (content) {
     }
 };
-
-function getLibPath(){
-    return "D:\\Documents\\记录\\Quiver.qvlibrary";
-}

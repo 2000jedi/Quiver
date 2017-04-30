@@ -86,6 +86,39 @@
             background-color: #EEEEEE;
             cursor: pointer;
         }
+
+        #inputDialog{
+            position: fixed;
+            right: 30%;
+            top: 30%;
+            width: 40%;
+            height: 15%;
+            display: block;
+            padding: 5px;
+            border: 5px solid grey;
+            border-radius: 25px;
+            background-color: white;
+        }
+        #input_prompt{
+            display: block;
+            position: relative;
+            width: 100%;
+            font-size: 16px;
+            line-height: 1em;
+            height: 1em;
+            margin-bottom: 1em;
+        }
+        #input{
+            padding: 4px;
+            width: 97%;
+            font-size: 16px;
+            background: 0 0;
+            text-align: left;
+            color: inherit;
+            border: 2px solid grey;
+            border-radius: 10px;
+            margin: 0 0 1em;
+        }
     </style>
 </head>
 <body style="margin: 0;">
@@ -99,15 +132,40 @@
     and Electron <script>document.write(process.versions.electron)</script>.
 </div>
 <div id="edit" onclick="editor();">EDIT</div>
+<div id="inputDialog" style="display: none;">
+    <div id="input_prompt">This is a prompt</div>
+    <input type="text" id="input" />
+    <button id="submit" onclick="submit_change();">OK</button>
+    <button id="cancel" onclick="cancel_change()">cancel</button>
+</div>
 </body>
 <script>
     let cur_notebook = null;
     let cur_note = null;
+    let cur_submit = null;
     const db = require("./../database");
     db.getNotebooks();
 
     function editor(){
 
+    }
+
+    function submit_change(){
+        if (cur_submit === "notebook"){
+            // add folder and meta.json
+        }
+        else if (cur_submit === "note") {
+            // add folder with random uuid and content/meta.json
+        }
+        else{
+            const dialog = require("electron").remote.dialog;
+            dialog.showErrorBox("Unexpected Submit", "Contact Developer");
+        }
+    }
+
+    function cancel_change(){
+        document.getElementById("input").value = "";
+        document.getElementById("inputDialog").style.display = "none";
     }
 </script>
 </html>
