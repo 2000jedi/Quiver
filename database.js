@@ -9,7 +9,7 @@ module.exports = {
         const lib = getLibPath();
         fs.readdir(lib, function (err, files) {
             if (err) {
-                console.log("Error reading library");
+                alert("Cannot find Quiver library!");
                 return
             }
 
