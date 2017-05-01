@@ -22,6 +22,7 @@ module.exports = {
                     let elem = document.createElement("div");
                     elem.innerHTML = file.toString().split('.')[0];
                     elem.setAttribute("onclick","db.getNotes('" + elem.innerHTML + "');");
+                    elem.setAttribute("id",elem.innerHTML);
                     document.getElementById("menu").appendChild(elem);
                 }
             });
@@ -33,7 +34,6 @@ module.exports = {
     },
 
     getNotes: function (notebook_name) {
-        cur_notebook = notebook_name;
         const lib = libPath + "/" + notebook_name + ".qvnotebook";
         fs.readdir(lib, function (err, files) {
             if (err) {
@@ -47,6 +47,7 @@ module.exports = {
                     let file_description = JSON.parse(fs.readFileSync(lib+"/"+file.toString()+"/meta.json", "utf8"));
                     elem.innerHTML = file_description.title;
                     elem.setAttribute("onclick", "db.getNote('" + notebook_name + "', '" + file.toString() + "');");
+                    elem.setAttribute("id",file.toString());
                     document.getElementById("submenu").appendChild(elem);
                 }
             });

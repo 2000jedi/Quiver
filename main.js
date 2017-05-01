@@ -10,8 +10,7 @@ let mainWindow;
 function createWindow(){
     mainWindow=new BrowserWindow({
         width:1280,
-        height:800,
-        resizable: false
+        height:800
     });
     mainWindow.loadURL('file://' + __dirname + '/app/index.html');
     mainWindow.on("closed",function(){
