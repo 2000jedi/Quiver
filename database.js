@@ -5,7 +5,7 @@
 const fs = require("fs");
 const md = require("markdown").markdown;
 const dialog = require("electron").remote.dialog;
-const libPath = "C:\\Users\\2000jedi\\Documents\\Test.qvlibrary";
+const libPath = "/Users/jedi/node/Quiver.qvlibrary";
 
 module.exports = {
     libPath: libPath,
@@ -53,7 +53,7 @@ module.exports = {
             });
             let add = document.createElement("div");
             add.innerHTML = " + Add Note";
-            add.setAttribute("onclick", "db.newNote();");
+            add.setAttribute("onclick", "db.addNote();");
             document.getElementById("submenu").appendChild(add);
         });
     },
@@ -81,6 +81,12 @@ module.exports = {
         document.getElementById("input_prompt").innerHTML = "Set name for the new notebook: ";
         document.getElementById("inputDialog").style.display = "initial";
         cur_submit = "notebook";
+    },
+
+    addNote: function (){
+        document.getElementById("input_prompt").innerHTML = "Set name for the new note: ";
+        document.getElementById("inputDialog").style.display = "initial";
+        cur_submit = "note";
     },
 
     updateNote: function (notebook_name, note_name, content) {
